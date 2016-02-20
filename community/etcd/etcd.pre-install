@@ -1,0 +1,3 @@
+#!/bin/sh
+adduser -s /sbin/nologin -D etcd 2>/dev/null
+exit 0

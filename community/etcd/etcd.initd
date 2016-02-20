@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+
+ETCD_DATA_DIR="${ETCD_DATA_DIR:-/var/lib/etcd}"
+ETCD_NAME="${ETCD_NAME:-etcd}"
+
+name=etcd
+command="${ETCD_BINARY:-/usr/bin/$name}"
+command_args="-name=$ETCD_NAME -data-dir=$ETCD_DATA_DIR $ETCD_OPTS"
+pidfile="${ETCD_PIDFILE:-/run/$name.pid}"
+logpath=/var/log/$name
+start_stop_daemon_args="--background --user $name --group $name -1 $logpath/$name.log -2 $logpath/$name.err"
+
+start_pre() {
+	checkpath --directory --owner $name $logpath
+	checkpath --directory --owner $name $ETCD_DATA_DIR
+}

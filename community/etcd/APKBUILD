@@ -1,0 +1,38 @@
+# Maintainer: Michal Rostecki <michal.rostecki@gmail.com>
+pkgname=etcd
+pkgver=2.2.5
+pkgrel=0
+_gitcommit=bc9ddf2
+pkgdesc="Distributed reliable key-value store for the most critical data of a distributed system"
+url="https://coreos.com/etcd/"
+arch="all"
+license="ASL 2.0"
+depends=""
+depends_dev=""
+makedepends="go"
+options="!strip"
+install="$pkgname.pre-install"
+pkguserss="etcd"
+pkggroups="etcd"
+source="${pkgname}-${pkgver}.tar.gz::https://codeload.github.com/coreos/etcd/tar.gz/v${pkgver}
+	etcd.initd"
+
+_builddir="$srcdir/etcd-$pkgver"
+
+build() {
+	cd "$_builddir"
+	./build
+}
+
+package() {
+	install -Dm755 "${srcdir}/${pkgname}.initd" "${pkgdir}/etc/init.d/${pkgname}"
+	install -Dm755 "$_builddir/bin/etcd" "$pkgdir"/usr/bin/etcd
+	install -Dm755 "$_builddir/bin/etcdctl" "$pkgdir"/usr/bin/etcdctl
+}
+
+md5sums="ca3f88f7e968bef914c43725d1053fda  etcd-2.2.5.tar.gz
+0264552754758d77cc2ff38e00c83d78  etcd.initd"
+sha256sums="a7fb7998ada620fda74e517c100891d25a15a6fa20b627df52da7cd29328e6d5  etcd-2.2.5.tar.gz
+2818f4ad273bfed5e157b5bab98e44e45b7e55fb6a1e2558f0a01d0b8980511c  etcd.initd"
+sha512sums="4436180c564ba2122cb346033ccf3de90e1f9cf17c12f62635c41cd0617c16e1a5705bbcfce64d74702ee378e89bc6663f208a99d64e819ddf449c3f442a38e0  etcd-2.2.5.tar.gz
+79f50f99d907d0cc00a886092a1d1b9f34a1fea3594d93ea6fcccac5860aec95d712c5eb09a2c7351cb1680802d268f937bf981d0614351c1461614905063cbe  etcd.initd"
